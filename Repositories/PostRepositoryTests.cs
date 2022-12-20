@@ -95,5 +95,106 @@ namespace MyBlog.Test.Repositories
             //Assert
             result.Should().NotBeNull();     
         }
+
+        [Fact]
+        public async void PostRepository_GetPostByTitleName_ReturnsPost()
+        {
+            //Arrange
+            var titleName = "Dolor anim cupidatat";
+            var dbContext = await GetDataBaseContext();
+            var postRepository = new PostRepository(dbContext, _mapper);
+
+            //Act
+            var result = postRepository.GetPostByTitleName(titleName);
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(Task<Post>));
+
+        }
+
+        [Fact]
+        public async void PostRepository_GetPostEntity_ReturnsPost()
+        {
+            //Arrange
+            var authorName = "João Neto";
+            var dbContext = await GetDataBaseContext();
+            var postRepository = new PostRepository(dbContext, _mapper);
+
+            //Act
+            var result = postRepository.GetPostEntity(authorName);
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(Task<Post>));
+
+        }
+
+        [Fact]
+
+        public async void PostRepository_GetPosts_ReturnsPostDto()
+        {
+            //Arrange
+            var dbContext = await GetDataBaseContext();
+            var postRepository = new PostRepository(dbContext, _mapper);
+
+            //Act
+            var result = postRepository.GetPosts();
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(Task<IEnumerable<PostDto>>));
+        }
+
+        [Fact]
+        public async void PostRepository_SaveChanges_ReturnsTrue()
+        {
+            //Arrange
+            var Post = new Post()
+            {
+                Author = "João Paulo",
+                Titulo = "Dolor anim cupidatat",
+                SubTitulo = "Sunt esse aliqua ullamco in incididunt consequat commodo.",
+                Conteudo = "Dolor anim cupidatat occaecat aliquip et Lorem ut elit fugiat. Mollit eu pariatur est sunt. Minim fugiat sit do dolore eu elit ex do id sunt. Qui fugiat nostrud occaecat nisi est dolor qui fugiat laborum cillum. Occaecat consequat ex mollit commodo ad irure cillum nulla velit ex pariatur veniam cupidatat. Officia veniam officia non deserunt mollit.\r\n",
+                CreatedAt = DateTime.Now,
+                Categoria = "Esportes",
+            };
+            var dbContext = await GetDataBaseContext();
+            var postRepository = new PostRepository(dbContext, _mapper);
+
+            //Act
+            postRepository.NewPost(Post);
+            var result = postRepository.SaveChanges();
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(Task<bool>));
+        }
+
+        [Fact]
+        public async void PostRepository_DeletePost_ReturnsTrue()
+        {
+            //Arrange
+            var Post = new Post()
+            {
+                Author = "João Paulo",
+                Titulo = "Dolor anim cupidatat",
+                SubTitulo = "Sunt esse aliqua ullamco in incididunt consequat commodo.",
+                Conteudo = "Dolor anim cupidatat occaecat aliquip et Lorem ut elit fugiat. Mollit eu pariatur est sunt. Minim fugiat sit do dolore eu elit ex do id sunt. Qui fugiat nostrud occaecat nisi est dolor qui fugiat laborum cillum. Occaecat consequat ex mollit commodo ad irure cillum nulla velit ex pariatur veniam cupidatat. Officia veniam officia non deserunt mollit.\r\n",
+                CreatedAt = DateTime.Now,
+                Categoria = "Esportes",
+            };
+            var dbContext = await GetDataBaseContext();
+            var postRepository = new PostRepository(dbContext, _mapper);
+
+            //Act
+            postRepository.DeletePost(Post);
+            var result = postRepository.SaveChanges();
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType(typeof(Task<bool>));
+        }
     }
 }
+
